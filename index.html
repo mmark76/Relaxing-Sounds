@@ -154,30 +154,30 @@
     <header>
       <div class="title-group">
         <h1>Calm Utility</h1>
-        <p class="subtitle">Ήχοι. Αναπνοές. Μικρά sessions ηρεμίας.</p>
+        <p class="subtitle">Sounds. Breathing. Small calming sessions.</p>
       </div>
       <div class="chip">low stimulation • focus first</div>
     </header>
 
     <main class="layout">
 
-      <!-- ΑΡΙΣΤΕΡΑ -->
+      <!-- LEFT -->
       <div>
 
-        <!-- Ήχοι -->
+        <!-- Sounds -->
         <section class="card">
           <div class="card-header">
             <div>
-              <div class="card-title">Ήχοι Υποβάθρου</div>
-              <div class="card-caption">Λιτοί ήχοι για ήρεμη συγκέντρωση.</div>
+              <div class="card-title">Background Sounds</div>
+              <div class="card-caption">Minimal sounds for calm focus.</div>
             </div>
-            <button class="btn small" id="soundMasterToggle">▶ Έναρξη</button>
+            <button class="btn small" id="soundMasterToggle">▶ Start</button>
           </div>
 
           <div class="sound-buttons">
-            <button class="btn primary" data-sound="tone">Ήπιος Τόνος</button>
-            <button class="btn" data-sound="noise">Απαλός Θόρυβος</button>
-            <button class="btn" data-sound="pulse">Κύμα Αναπνοής</button>
+            <button class="btn primary" data-sound="tone">Soft Tone</button>
+            <button class="btn" data-sound="noise">Gentle Noise</button>
+            <button class="btn" data-sound="pulse">Breathing Wave</button>
           </div>
 
           <!-- My Uploads -->
@@ -188,45 +188,45 @@
                  style="margin-bottom:8px; width:100%; font-size:0.75rem;" />
 
           <select id="uploadedSoundsSelect" style="width:100%; padding:6px; display:none;">
-            <option disabled selected>Επίλεξε από τα uploaded…</option>
+            <option disabled selected>Select from uploaded…</option>
           </select>
 
           <div class="sound-meta">
             <div style="display:flex; align-items:center;">
               <div class="sound-status-dot" id="soundStatusDot"></div>
-              <span id="soundStatusLabel">Ανενεργό</span>
+              <span id="soundStatusLabel">Inactive</span>
             </div>
             <span id="soundCurrentLabel">—</span>
           </div>
 
           <input id="volumeSlider" class="slider" type="range" min="0" max="100" value="40" />
-          <div class="sound-meta"><span>Ένταση</span><span id="volumeValue">40%</span></div>
+          <div class="sound-meta"><span>Volume</span><span id="volumeValue">40%</span></div>
         </section>
 
-        <!-- (Αν θες ξανά Αναπνοή, την προσθέτουμε μετά) -->
+        <!-- (If you want Breathing again, we add it later) -->
       </div>
 
-      <!-- ΔΕΞΙΑ: Defaults Sounds -->
+      <!-- RIGHT: Default Sounds -->
       <div>
         <section class="card">
           <div class="card-header">
             <div>
-              <div class="card-title">Defaults Sounds</div>
-              <div class="card-caption">10 έτοιμοι ήχοι από τον φάκελο sounds/.</div>
+              <div class="card-title">Default Sounds</div>
+              <div class="card-caption">10 ready sounds from the sounds/ folder.</div>
             </div>
           </div>
 
           <div class="sound-buttons">
-<button class="btn small" data-default-sound="sound_(1).wav">sound_(1)</button>
-<button class="btn small" data-default-sound="sound_(2).wav">sound_(2)</button>
-<button class="btn small" data-default-sound="sound_(3).wav">sound_(3)</button>
-<button class="btn small" data-default-sound="sound_(4).wav">sound_(4)</button>
-<button class="btn small" data-default-sound="sound_(5).wav">sound_(5)</button>
-<button class="btn small" data-default-sound="sound_(6).wav">sound_(6)</button>
-<button class="btn small" data-default-sound="sound_(7).wav">sound_(7)</button>
-<button class="btn small" data-default-sound="sound_(8).wav">sound_(8)</button>
-<button class="btn small" data-default-sound="sound_(9).wav">sound_(9)</button>
-<button class="btn small" data-default-sound="sound_(10).wav">sound_(10)</button>
+            <button class="btn small" data-default-sound="sound_(1).wav">sound_(1)</button>
+            <button class="btn small" data-default-sound="sound_(2).wav">sound_(2)</button>
+            <button class="btn small" data-default-sound="sound_(3).wav">sound_(3)</button>
+            <button class="btn small" data-default-sound="sound_(4).wav">sound_(4)</button>
+            <button class="btn small" data-default-sound="sound_(5).wav">sound_(5)</button>
+            <button class="btn small" data-default-sound="sound_(6).wav">sound_(6)</button>
+            <button class="btn small" data-default-sound="sound_(7).wav">sound_(7)</button>
+            <button class="btn small" data-default-sound="sound_(8).wav">sound_(8)</button>
+            <button class="btn small" data-default-sound="sound_(9).wav">sound_(9)</button>
+            <button class="btn small" data-default-sound="sound_(10).wav">sound_(10)</button>
           </div>
         </section>
       </div>
@@ -234,10 +234,11 @@
     </main>
 
     <footer>
-      <span>Σχεδιασμένο για χαμηλή διέγερση και γρήγορη πρόσβαση.</span>
-      <span>Tip: άνοιξέ το σε full-screen και άφησε μόνο αυτό.</span>
+      <span>Designed for low stimulation and fast access.</span>
     </footer>
   </div>
+</body>
+
 
   <script>
     /* -------------------------------------
@@ -476,3 +477,4 @@
   </script>
 </body>
 </html>
+
