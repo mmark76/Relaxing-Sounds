@@ -571,7 +571,7 @@
           <div class="card-header">
             <div>
               <div class="card-title">Default Sounds</div>
-              <div class="card-caption">10 ready-made tracks from the <code>sounds/</code> folder.</div>
+              <div class="card-caption">10 ready-made sounds</div>
             </div>
           </div>
 <div class="sound-buttons sound-buttons--tight" id="defaultSoundButtons">
@@ -600,7 +600,7 @@
           <div class="breathing-top-row">
             <div class="breathing-circle-wrapper">
               <div class="breathing-circle" id="breathingCircle">
-                <span class="breathing-label" id="breathingLabel">Ready when you are.</span>
+                <span class="breathing-label" id="breathingLabel">When you are ready.</span>
               </div>
               <div class="breathing-sub" id="breathingSubLabel">
                 Choose a pattern and session length, then press <strong>Start</strong>.
@@ -790,7 +790,7 @@
       if (selectedSound.type === "generated") {
         playGeneratedSound(selectedSound.id);
       } else if (selectedSound.type === "default" && selectedSound.file) {
-        playFileSound("sounds/" + selectedSound.file);
+        playFileSound("/sounds/" + selectedSound.file);
       } else if (selectedSound.type === "uploaded" && selectedSound.url) {
         playFileSound(selectedSound.url);
       }
@@ -1100,6 +1100,7 @@
   </script>
 </body>
 </html>
+
 
 
 
