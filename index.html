@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Relaxing sounds - Calm Utility</title>
+  <title>Calm Utility</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-soft: #111827;
+      --bg: #020617;
+      --bg-soft: #0b1220;
+      --bg-softer: #0f172a;
       --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.1);
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --accent-soft-strong: rgba(56, 189, 248, 0.2);
       --text: #e5e7eb;
       --text-muted: #9ca3af;
       --border: #1f2937;
@@ -23,7 +25,8 @@
     body {
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f2937 0, #020617 50%, #020617 100%);
+      background:
+        radial-gradient(circle at top, #1f2937 0, #020617 55%, #020617 100%);
       color: var(--text);
       display: flex;
       justify-content: center;
@@ -33,13 +36,27 @@
 
     .app {
       width: 100%;
-      max-width: 960px;
-      background: rgba(15, 23, 42, 0.95);
+      max-width: 1040px;
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
       border-radius: 28px;
       box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      padding: 24px 24px 28px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 24px 24px 24px;
       backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.14), transparent 50%);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
     }
 
     header {
@@ -50,15 +67,34 @@
       margin-bottom: 20px;
     }
 
-    .title-group { display: flex; flex-direction: column; gap: 4px; }
-
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
+    .title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .subtitle { font-size: 0.85rem; color: var(--text-muted); }
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h1 span.logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
     .chip {
       font-size: 0.7rem;
@@ -66,35 +102,60 @@
       letter-spacing: 0.12em;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.45);
       color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.6);
     }
 
     .layout {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 18px;
     }
 
-    @media (max-width: 800px) {
-      .app { padding: 16px 14px 20px; border-radius: 20px; }
-      .layout { grid-template-columns: 1fr; }
+    @media (max-width: 900px) {
+      .app {
+        padding: 16px 14px 18px;
+        border-radius: 20px;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
 
     section.card {
-      background: var(--bg-soft);
+      background: linear-gradient(135deg, var(--bg-soft), var(--bg-softer));
       border-radius: var(--radius-xl);
       padding: 18px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.7);
     }
 
-    section.card + section.card { margin-top: 10px; }
+    section.card + section.card {
+      margin-top: 10px;
+    }
 
     .card-header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
     }
 
     .card-title {
@@ -102,49 +163,323 @@
       font-weight: 500;
       text-transform: uppercase;
       color: var(--text-muted);
+      letter-spacing: 0.12em;
     }
 
-    .card-caption { font-size: 0.8rem; color: var(--text-muted); }
+    .card-caption {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
 
     .sound-buttons {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
       margin-bottom: 12px;
     }
 
+    .sound-buttons--tight {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
     .btn {
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       border-radius: 999px;
       padding: 8px 10px;
       font-size: 0.8rem;
       color: var(--text-muted);
       cursor: pointer;
-      transition: .18s;
+      transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        color 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.07s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
     }
 
-    .btn.small { padding: 5px 9px; font-size: 0.72rem; }
-    .btn.primary { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-    .btn:hover { background: rgba(15,23,42,0.95); color: var(--text); }
+    .btn.small {
+      padding: 5px 9px;
+      font-size: 0.72rem;
+    }
+
+    .btn.primary {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
+    }
+
+    .btn.icon-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      padding: 0;
+      font-size: 0.85rem;
+    }
+
+    .btn[disabled] {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .btn:hover:not([disabled]) {
+      background: rgba(15, 23, 42, 0.98);
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.8);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.85);
+      transform: translateY(-0.5px);
+    }
+
+    .btn.primary:hover:not([disabled]) {
+      background: var(--accent-soft-strong);
+      border-color: var(--accent);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.4);
+    }
 
     .sound-meta {
-      display: flex; justify-content: space-between;
-      font-size: 0.78rem; color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
       margin-top: 4px;
+      gap: 8px;
+    }
+
+    .sound-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .sound-status-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(148,163,184,0.5);
-      margin-right: 6px;
-    }
-    .sound-status-dot.active {
-      background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.5);
+      margin-right: 2px;
+      box-shadow: 0 0 0 0 transparent;
+      transition: background 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .slider { width: 100%; margin-top: 6px; }
+    .sound-status-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+    }
+
+    .slider {
+      width: 100%;
+      margin-top: 6px;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: #020617;
+      outline: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+      cursor: pointer;
+      transition: box-shadow 0.15s ease, transform 0.1s ease;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+      cursor: pointer;
+      border: none;
+    }
+
+    .slider:active::-webkit-slider-thumb {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.35);
+    }
+
+    .section-divider {
+      border: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+      margin: 10px 0;
+    }
+
+    .select {
+      width: 100%;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      outline: none;
+      transition: border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .select:focus {
+      border-color: var(--accent);
+      background: rgba(15, 23, 42, 0.98);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+
+    .input-file {
+      margin-bottom: 8px;
+      width: 100%;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .input-file::file-selector-button {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-right: 8px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      transition: 0.16s;
+    }
+
+    .input-file::file-selector-button:hover {
+      background: rgba(15, 23, 42, 1);
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.75);
+    }
+
+    /* Breathing card */
+
+    .breathing-top-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .breathing-circle-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .breathing-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.25),
+        0 0 26px rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      transform: scale(0.92);
+      transition:
+        transform 1.2s ease,
+        box-shadow 0.9s ease,
+        background 0.9s ease,
+        border-color 0.3s ease;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 60%);
+    }
+
+    .breathing-circle.phase-inhale {
+      transform: scale(1.1);
+      background: radial-gradient(circle at center,
+        rgba(56, 189, 248, 0.18),
+        transparent 65%);
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.4),
+        0 0 50px rgba(56, 189, 248, 0.7);
+    }
+
+    .breathing-circle.phase-hold {
+      transform: scale(1.04);
+      background: radial-gradient(circle at center,
+        rgba(56, 189, 248, 0.12),
+        transparent 60%);
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.3),
+        0 0 30px rgba(56, 189, 248, 0.45);
+    }
+
+    .breathing-circle.phase-exhale {
+      transform: scale(0.9);
+      background: radial-gradient(circle at bottom,
+        rgba(15, 23, 42, 1),
+        rgba(15, 23, 42, 0.8));
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.22),
+        0 0 24px rgba(15, 23, 42, 1);
+    }
+
+    .breathing-label {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .breathing-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .breathing-controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .breathing-controls-row .select {
+      flex: 1 1 120px;
+    }
+
+    .breathing-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .breathing-timer {
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+
+    footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(15, 23, 42, 0.9);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    footer span strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -153,70 +488,94 @@
 
     <header>
       <div class="title-group">
-        <h1>Relaxing sounds - Calm Utility</h1>
-        <p class="subtitle">Sounds. Breathing. Small calming sessions.</p>
+        <h1>
+          <span class="logo-dot"></span>
+          Calm Utility
+        </h1>
+        <p class="subtitle">Low-stimulation sound & breathing console for quick calm sessions.</p>
       </div>
-      <div class="chip">low stimulation • focus first</div>
+      <div class="chip">
+        <span class="chip-dot"></span>
+        low stimulation • focus first
+      </div>
     </header>
 
     <main class="layout">
 
-      <!-- LEFT -->
+      <!-- LEFT: Sounds -->
       <div>
 
-        <!-- Sounds -->
+        <!-- Background Sounds -->
         <section class="card">
           <div class="card-header">
             <div>
               <div class="card-title">Background Sounds</div>
-              <div class="card-caption">Minimal sounds for calm focus.</div>
+              <div class="card-caption">Minimal sound layers for calm concentration.</div>
             </div>
             <button class="btn small" id="soundMasterToggle">▶ Start</button>
           </div>
 
-          <div class="sound-buttons">
+          <div class="sound-buttons" id="generatedSoundButtons">
             <button class="btn primary" data-sound="tone">Soft Tone</button>
             <button class="btn" data-sound="noise">Gentle Noise</button>
             <button class="btn" data-sound="pulse">Breathing Wave</button>
           </div>
 
-          <!-- My Uploads -->
-          <hr style="border:0; border-top:1px solid rgba(148,163,184,0.15); margin:10px 0;">
-          <div class="sound-meta"><span>My Uploads</span></div>
+          <hr class="section-divider" />
+          <div class="sound-meta">
+            <span>My Uploads</span>
+            <span style="opacity:.8;">Optional personal tracks (mp3/wav/ogg)</span>
+          </div>
 
-          <input type="file" id="soundUpload" accept=".mp3,.wav,.ogg" multiple
-                 style="margin-bottom:8px; width:100%; font-size:0.75rem;" />
+          <input
+            type="file"
+            id="soundUpload"
+            class="input-file"
+            accept=".mp3,.wav,.ogg"
+            multiple
+          />
 
-          <select id="uploadedSoundsSelect" style="width:100%; padding:6px; display:none;">
+          <select id="uploadedSoundsSelect" class="select" style="display:none;">
             <option disabled selected>Select from uploaded…</option>
           </select>
 
-          <div class="sound-meta">
-            <div style="display:flex; align-items:center;">
+          <div class="sound-meta" style="margin-top:8px;">
+            <div class="sound-status">
               <div class="sound-status-dot" id="soundStatusDot"></div>
               <span id="soundStatusLabel">Inactive</span>
             </div>
             <span id="soundCurrentLabel">—</span>
           </div>
 
-          <input id="volumeSlider" class="slider" type="range" min="0" max="100" value="40" />
-          <div class="sound-meta"><span>Volume</span><span id="volumeValue">40%</span></div>
+          <input
+            id="volumeSlider"
+            class="slider"
+            type="range"
+            min="0"
+            max="100"
+            value="40"
+          />
+          <div class="sound-meta">
+            <span>Volume</span>
+            <span id="volumeValue">40%</span>
+          </div>
         </section>
 
-        <!-- (If you want Breathing again, we add it later) -->
       </div>
 
-      <!-- RIGHT: Default Sounds -->
+      <!-- RIGHT: Default Sounds + Breathing -->
       <div>
+
+        <!-- Default sounds from folder -->
         <section class="card">
           <div class="card-header">
             <div>
               <div class="card-title">Default Sounds</div>
-              <div class="card-caption">10 ready sounds from the sounds/ folder.</div>
+              <div class="card-caption">10 ready-made tracks from the <code>sounds/</code> folder.</div>
             </div>
           </div>
 
-          <div class="sound-buttons">
+          <div class="sound-buttons sound-buttons--tight" id="defaultSoundButtons">
             <button class="btn small" data-default-sound="sound_(1).wav">sound_(1)</button>
             <button class="btn small" data-default-sound="sound_(2).wav">sound_(2)</button>
             <button class="btn small" data-default-sound="sound_(3).wav">sound_(3)</button>
@@ -229,253 +588,510 @@
             <button class="btn small" data-default-sound="sound_(10).wav">sound_(10)</button>
           </div>
         </section>
+
+        <!-- Breathing Sessions -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Breathing Sessions</div>
+              <div class="card-caption">Guided patterns with soft visual pacing & optional timers.</div>
+            </div>
+          </div>
+
+          <div class="breathing-top-row">
+            <div class="breathing-circle-wrapper">
+              <div class="breathing-circle" id="breathingCircle">
+                <span class="breathing-label" id="breathingLabel">Ready when you are.</span>
+              </div>
+              <div class="breathing-sub" id="breathingSubLabel">
+                Choose a pattern and session length, then press <strong>Start</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="breathing-controls-row">
+            <select id="breathingPatternSelect" class="select">
+              <option value="box" selected>Box 4–4–4–4 (balanced)</option>
+              <option value="478">4–7–8 (deep calm)</option>
+              <option value="focus">Steady 5–5 (focus)</option>
+            </select>
+
+            <select id="breathingSessionSelect" class="select">
+              <option value="300" selected>5 minutes</option>
+              <option value="600">10 minutes</option>
+              <option value="900">15 minutes</option>
+              <option value="0">Open session (no timer)</option>
+            </select>
+          </div>
+
+          <div class="breathing-controls-row" style="margin-top:10px;">
+            <button class="btn small" id="breathingStartBtn">
+              ▶ Start session
+            </button>
+            <button class="btn small" id="breathingResetBtn">
+              ⟳ Reset
+            </button>
+          </div>
+
+          <div class="breathing-bottom-row">
+            <div>
+              <span>Timer:</span>
+              <span class="breathing-timer" id="breathingTimerLabel">Open session</span>
+            </div>
+            <div>
+              <span id="breathingHint">Tip: sync your gaze with the circle’s expansion and contraction.</span>
+            </div>
+          </div>
+        </section>
+
       </div>
 
     </main>
 
     <footer>
-      <span>Designed for low stimulation and fast access.</span>
+      <span>Designed for <strong>low stimulation</strong> and rapid access. Keep it full-screen and let everything else fade out.</span>
+      <span>Best used with headphones at a comfortable, not loud, volume.</span>
     </footer>
   </div>
-</body>
-
 
   <script>
-    /* -------------------------------------
-       CORE AUDIO SYSTEM
-    --------------------------------------*/
-    let audioContext = null;
-    let masterGain = null;
-    let currentSound = null;
-    let noiseNode = null;
-    let pulseInterval = null;
-    let soundActive = false;
+    // =========================
+    // Sound engine
+    // =========================
 
-    const soundStatusDot = document.getElementById("soundStatusDot");
-    const soundStatusLabel = document.getElementById("soundStatusLabel");
-    const soundCurrentLabel = document.getElementById("soundCurrentLabel");
+    const masterToggleBtn = document.getElementById("soundMasterToggle");
+    const generatedButtons = document.querySelectorAll("[data-sound]");
+    const defaultButtons = document.querySelectorAll("[data-default-sound]");
+    const allSoundButtons = document.querySelectorAll("[data-sound], [data-default-sound]");
+    const uploadInput = document.getElementById("soundUpload");
+    const uploadedSelect = document.getElementById("uploadedSoundsSelect");
+    const statusDot = document.getElementById("soundStatusDot");
+    const statusLabel = document.getElementById("soundStatusLabel");
+    const currentLabel = document.getElementById("soundCurrentLabel");
     const volumeSlider = document.getElementById("volumeSlider");
     const volumeValue = document.getElementById("volumeValue");
-    const soundMasterToggle = document.getElementById("soundMasterToggle");
 
-    const soundUpload = document.getElementById("soundUpload");
-    const uploadedSoundsSelect = document.getElementById("uploadedSoundsSelect");
+    let audioCtx = null;
+    let masterGain = null;
 
-    let uploadedSounds = {};
+    let selectedSound = { type: "generated", id: "tone" };
+    let selectedSoundLabel = "Soft Tone";
+    let isMasterOn = false;
 
-    function ensureAudioContext() {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        masterGain = audioContext.createGain();
-        masterGain.gain.value = volumeSlider.value / 100 * 0.5;
-        masterGain.connect(audioContext.destination);
+    let currentOscillator = null;
+    let currentNoiseSource = null;
+    let currentAudioElement = null;
+
+    const uploadedSounds = []; // { name, url }
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        const ACtx = window.AudioContext || window.webkitAudioContext;
+        if (!ACtx) return;
+        audioCtx = new ACtx();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = volumeSlider.value / 100;
+        masterGain.connect(audioCtx.destination);
       }
     }
 
-    async function resumeIfNeeded() {
-      if (!audioContext) return;
-      if (audioContext.state === "suspended") await audioContext.resume();
-    }
-
-    function stopAllSoundSources() {
-      if (currentSound) {
-        if (typeof currentSound.stop === "function") {
-          try { currentSound.stop(); } catch (e) {}
-        }
-        if (typeof currentSound.disconnect === "function") {
-          try { currentSound.disconnect(); } catch (e) {}
-        }
-        if (currentSound instanceof HTMLAudioElement) {
-          try {
-            currentSound.pause();
-            currentSound.currentTime = 0;
-          } catch (e) {}
-        }
-        currentSound = null;
+    function stopAllSounds() {
+      if (currentOscillator) {
+        try { currentOscillator.stop(); } catch (e) {}
+        currentOscillator.disconnect();
+        currentOscillator = null;
       }
-
-      if (noiseNode) {
-        try { noiseNode.stop(); } catch (e) {}
-        try { noiseNode.disconnect(); } catch (e) {}
-        noiseNode = null;
+      if (currentNoiseSource) {
+        try { currentNoiseSource.stop(); } catch (e) {}
+        currentNoiseSource.disconnect();
+        currentNoiseSource = null;
       }
-
-      if (pulseInterval) {
-        clearInterval(pulseInterval);
-        pulseInterval = null;
+      if (currentAudioElement) {
+        currentAudioElement.pause();
+        currentAudioElement = null;
       }
     }
 
-    function setSoundStatus(active, label = "Ανενεργό") {
-      soundActive = active;
-      soundStatusDot.classList.toggle("active", active);
-      soundStatusLabel.textContent = active ? "Ενεργό" : "Ανενεργό";
-      soundCurrentLabel.textContent = active ? label : "—";
-      soundMasterToggle.textContent = active ? "⏹ Παύση" : "▶ Έναρξη";
-    }
+    function playGeneratedSound(kind) {
+      if (!audioCtx || !masterGain) return;
 
-    /* --------------------------------------------------------
-       PLAY DEFAULT FILE FROM /sounds (δεξί panel)
-    ---------------------------------------------------------*/
-    async function playFileFromSounds(filename) {
-      ensureAudioContext();
-      await resumeIfNeeded();
-      stopAllSoundSources();
-
-      const audio = new Audio(`sounds/${filename}`);
-      const track = audioContext.createMediaElementSource(audio);
-      track.connect(masterGain);
-      audio.loop = true;
-      audio.play();
-
-      currentSound = audio;
-      setSoundStatus(true, filename);
-    }
-
-    document.querySelectorAll("[data-default-sound]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const filename = btn.getAttribute("data-default-sound");
-        if (filename) {
-          await playFileFromSounds(filename);
+      if (kind === "noise") {
+        const bufferSize = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = (Math.random() * 2 - 1) * 0.5;
         }
-      });
-    });
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = noiseBuffer;
+        noise.loop = true;
 
-    /* --------------------------------------------------------
-       UPLOAD MULTIPLE FILES (My Uploads)
-    ---------------------------------------------------------*/
-    soundUpload.addEventListener("change", evt => {
-      const files = Array.from(evt.target.files);
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.35;
+        noise.connect(gain);
+        gain.connect(masterGain);
 
-      files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        uploadedSounds[file.name] = url;
-      });
-
-      refreshUploadedList();
-    });
-
-    function refreshUploadedList() {
-      uploadedSoundsSelect.innerHTML =
-        `<option disabled selected>Επίλεξε από τα uploaded…</option>`;
-
-      const names = Object.keys(uploadedSounds);
-
-      if (names.length === 0) {
-        uploadedSoundsSelect.style.display = "none";
+        currentNoiseSource = noise;
+        noise.start();
         return;
       }
 
-      names.forEach(name => {
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        uploadedSoundsSelect.appendChild(opt);
-      });
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
 
-      uploadedSoundsSelect.style.display = "block";
+      if (kind === "tone") {
+        osc.type = "sine";
+        osc.frequency.value = 432;
+        gain.gain.value = 0.35;
+      } else if (kind === "pulse") {
+        osc.type = "sine";
+        osc.frequency.value = 110;
+        gain.gain.value = 0.3;
+      } else {
+        osc.type = "sine";
+        osc.frequency.value = 400;
+        gain.gain.value = 0.3;
+      }
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+
+      currentOscillator = osc;
+      osc.start();
     }
 
-    uploadedSoundsSelect.addEventListener("change", async (e) => {
-      const name = e.target.value;
-      const url = uploadedSounds[name];
-
-      ensureAudioContext();
-      await resumeIfNeeded();
-      stopAllSoundSources();
-
-      const audio = new Audio(url);
-      const track = audioContext.createMediaElementSource(audio);
-      track.connect(masterGain);
+    function playFileSound(src) {
+      const audio = new Audio(src);
       audio.loop = true;
-      audio.play();
+      audio.volume = volumeSlider.value / 100;
+      audio.play().catch(() => {
+        // autoplay might be blocked; user can toggle again
+      });
+      currentAudioElement = audio;
+    }
 
-      currentSound = audio;
-      setSoundStatus(true, name);
+    function playCurrentSound() {
+      if (!isMasterOn || !selectedSound) return;
+
+      initAudioContext();
+      if (!audioCtx) return;
+
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+
+      stopAllSounds();
+
+      if (selectedSound.type === "generated") {
+        playGeneratedSound(selectedSound.id);
+      } else if (selectedSound.type === "default" && selectedSound.file) {
+        playFileSound("sounds/" + selectedSound.file);
+      } else if (selectedSound.type === "uploaded" && selectedSound.url) {
+        playFileSound(selectedSound.url);
+      }
+
+      updateSoundStatusUI();
+    }
+
+    function updateSoundStatusUI() {
+      const active = isMasterOn && !!selectedSound;
+      if (active) {
+        statusDot.classList.add("active");
+        statusLabel.textContent = "Active";
+        currentLabel.textContent = selectedSoundLabel || "—";
+      } else {
+        statusDot.classList.remove("active");
+        statusLabel.textContent = "Inactive";
+        currentLabel.textContent = selectedSoundLabel ? `(ready) ${selectedSoundLabel}` : "—";
+      }
+    }
+
+    function setActiveButton(button) {
+      allSoundButtons.forEach(btn => {
+        if (btn === button) {
+          btn.classList.add("primary");
+        } else {
+          btn.classList.remove("primary");
+        }
+      });
+    }
+
+    masterToggleBtn.addEventListener("click", () => {
+      isMasterOn = !isMasterOn;
+      masterToggleBtn.textContent = isMasterOn ? "❚❚ Pause" : "▶ Start";
+
+      if (isMasterOn) {
+        playCurrentSound();
+      } else {
+        stopAllSounds();
+        updateSoundStatusUI();
+      }
     });
 
-    /* ------------------------------------------
-       BUILT-IN TONE / NOISE / PULSE
-    -------------------------------------------*/
-    function playTone() {
-      ensureAudioContext();
-      stopAllSoundSources();
-      const osc = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      osc.type = "sine";
-      osc.frequency.value = 432;
-      gain.gain.value = 0.35;
-      osc.connect(gain); gain.connect(masterGain);
-      osc.start();
-      currentSound = osc;
-      setSoundStatus(true, "Ήπιος Τόνος (432Hz)");
-    }
-
-    function createNoiseBuffer() {
-      const bufferSize = audioContext.sampleRate * 2;
-      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
-      return buffer;
-    }
-
-    function playNoise() {
-      ensureAudioContext();
-      stopAllSoundSources();
-      const src = audioContext.createBufferSource();
-      src.buffer = createNoiseBuffer();
-      src.loop = true;
-      const filter = audioContext.createBiquadFilter();
-      filter.type = "lowpass"; filter.frequency.value = 1500;
-      const gain = audioContext.createGain(); gain.gain.value = 0.4;
-      src.connect(filter); filter.connect(gain); gain.connect(masterGain);
-      src.start();
-      noiseNode = src;
-      setSoundStatus(true, "Απαλός Θόρυβος");
-    }
-
-    function playPulse() {
-      ensureAudioContext();
-      stopAllSoundSources();
-      const osc = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      osc.type = "sine"; osc.frequency.value = 220;
-      gain.gain.value = 0;
-      osc.connect(gain); gain.connect(masterGain);
-      osc.start();
-      let up = true;
-      pulseInterval = setInterval(() => {
-        const target = up ? 0.35 : 0.05;
-        gain.gain.linearRampToValueAtTime(target, audioContext.currentTime + 2.5);
-        up = !up;
-      }, 2500);
-      currentSound = osc;
-      setSoundStatus(true, "Κύμα Αναπνοής");
-    }
-
-    document.querySelectorAll("[data-sound]").forEach(btn => {
+    generatedButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        const t = btn.dataset.sound;
-        if (t === "tone") playTone();
-        if (t === "noise") playNoise();
-        if (t === "pulse") playPulse();
+        const kind = btn.getAttribute("data-sound");
+        selectedSound = { type: "generated", id: kind };
+        selectedSoundLabel = btn.textContent.trim();
+        setActiveButton(btn);
+        if (isMasterOn) {
+          playCurrentSound();
+        } else {
+          updateSoundStatusUI();
+        }
       });
     });
 
-    soundMasterToggle.addEventListener("click", () => {
-      if (!soundActive) playTone();
-      else { stopAllSoundSources(); setSoundStatus(false); }
+    defaultButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const file = btn.getAttribute("data-default-sound");
+        selectedSound = { type: "default", file };
+        selectedSoundLabel = btn.textContent.trim();
+        setActiveButton(btn);
+        if (isMasterOn) {
+          playCurrentSound();
+        } else {
+          updateSoundStatusUI();
+        }
+      });
+    });
+
+    uploadInput.addEventListener("change", (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        uploadedSounds.push({ name: file.name, url });
+        const option = document.createElement("option");
+        option.value = url;
+        option.textContent = file.name;
+        uploadedSelect.appendChild(option);
+      });
+
+      if (uploadedSounds.length > 0) {
+        uploadedSelect.style.display = "block";
+      }
+    });
+
+    uploadedSelect.addEventListener("change", () => {
+      const option = uploadedSelect.options[uploadedSelect.selectedIndex];
+      if (!option || !option.value) return;
+
+      selectedSound = { type: "uploaded", url: option.value };
+      selectedSoundLabel = option.textContent.trim();
+      // Visually un-highlight all default/generated buttons:
+      allSoundButtons.forEach(btn => btn.classList.remove("primary"));
+
+      if (isMasterOn) {
+        playCurrentSound();
+      } else {
+        updateSoundStatusUI();
+      }
     });
 
     volumeSlider.addEventListener("input", () => {
-      const v = volumeSlider.value;
-      volumeValue.textContent = v + "%";
+      const val = Number(volumeSlider.value) || 0;
+      volumeValue.textContent = val + "%";
       if (masterGain) {
-        masterGain.gain.value = v / 100 * 0.5;
+        masterGain.gain.value = val / 100;
+      }
+      if (currentAudioElement) {
+        currentAudioElement.volume = val / 100;
       }
     });
+
+    // Initial UI state
+    updateSoundStatusUI();
+
+    // =========================
+    // Breathing sessions
+    // =========================
+
+    const breathingCircle = document.getElementById("breathingCircle");
+    const breathingLabel = document.getElementById("breathingLabel");
+    const breathingSubLabel = document.getElementById("breathingSubLabel");
+    const breathingPatternSelect = document.getElementById("breathingPatternSelect");
+    const breathingSessionSelect = document.getElementById("breathingSessionSelect");
+    const breathingStartBtn = document.getElementById("breathingStartBtn");
+    const breathingResetBtn = document.getElementById("breathingResetBtn");
+    const breathingTimerLabel = document.getElementById("breathingTimerLabel");
+    const breathingHint = document.getElementById("breathingHint");
+
+    const BREATH_PATTERNS = {
+      box: {
+        phases: [
+          { label: "Inhale", seconds: 4 },
+          { label: "Hold", seconds: 4 },
+          { label: "Exhale", seconds: 4 },
+          { label: "Hold", seconds: 4 },
+        ],
+      },
+      "478": {
+        phases: [
+          { label: "Inhale", seconds: 4 },
+          { label: "Hold", seconds: 7 },
+          { label: "Exhale", seconds: 8 },
+        ],
+      },
+      focus: {
+        phases: [
+          { label: "Inhale", seconds: 5 },
+          { label: "Exhale", seconds: 5 },
+        ],
+      },
+    };
+
+    let breathingIntervalId = null;
+    let breathingRunning = false;
+    let breathingTotalSeconds = 0;
+    let breathingRemainingSeconds = 0;
+    let breathingPhaseIndex = 0;
+    let breathingPhaseElapsed = 0;
+
+    function formatTime(totalSeconds) {
+      const s = Math.max(0, Math.floor(totalSeconds));
+      const minutes = Math.floor(s / 60);
+      const seconds = s % 60;
+      return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    }
+
+    function updateBreathingCirclePhase(label) {
+      breathingCircle.classList.remove("phase-inhale", "phase-hold", "phase-exhale");
+      const lower = label.toLowerCase();
+      if (lower.includes("inhale") || lower.includes("in")) {
+        breathingCircle.classList.add("phase-inhale");
+      } else if (lower.includes("hold")) {
+        breathingCircle.classList.add("phase-hold");
+      } else if (lower.includes("exhale") || lower.includes("out")) {
+        breathingCircle.classList.add("phase-exhale");
+      }
+    }
+
+    function updateBreathingTimerUI() {
+      if (!breathingTotalSeconds || breathingTotalSeconds <= 0) {
+        breathingTimerLabel.textContent = "Open session";
+        return;
+      }
+      const elapsed = breathingTotalSeconds - breathingRemainingSeconds;
+      breathingTimerLabel.textContent =
+        formatTime(elapsed) + " / " + formatTime(breathingTotalSeconds);
+    }
+
+    function resetBreathingUI() {
+      breathingRunning = false;
+      breathingPhaseIndex = 0;
+      breathingPhaseElapsed = 0;
+      breathingCircle.classList.remove("phase-inhale", "phase-hold", "phase-exhale");
+      breathingLabel.textContent = "Ready when you are.";
+      breathingSubLabel.textContent =
+        "Choose a pattern and session length, then press Start.";
+      breathingHint.textContent =
+        "Tip: sync your gaze with the circle’s expansion and contraction.";
+      const defaultSeconds = parseInt(breathingSessionSelect.value, 10) || 0;
+      breathingTotalSeconds = defaultSeconds;
+      breathingRemainingSeconds = defaultSeconds;
+      updateBreathingTimerUI();
+      breathingStartBtn.disabled = false;
+    }
+
+    function stopBreathingSession() {
+      breathingRunning = false;
+      if (breathingIntervalId) {
+        clearInterval(breathingIntervalId);
+        breathingIntervalId = null;
+      }
+      resetBreathingUI();
+    }
+
+    function tickBreathing() {
+      const key = breathingPatternSelect.value;
+      const pattern = BREATH_PATTERNS[key];
+      if (!pattern) return;
+      const phases = pattern.phases;
+      if (!phases || !phases.length) return;
+
+      const currentPhase = phases[breathingPhaseIndex];
+
+      if (breathingPhaseElapsed === 0) {
+        breathingLabel.textContent = currentPhase.label;
+        updateBreathingCirclePhase(currentPhase.label);
+      }
+
+      breathingPhaseElapsed += 1;
+
+      if (breathingTotalSeconds > 0 && breathingRemainingSeconds > 0) {
+        breathingRemainingSeconds -= 1;
+        updateBreathingTimerUI();
+        if (breathingRemainingSeconds <= 0) {
+          // Session complete
+          breathingLabel.textContent = "Session complete.";
+          breathingSubLabel.textContent = "Take a moment, then gently return to your task.";
+          breathingCircle.classList.remove("phase-inhale", "phase-hold", "phase-exhale");
+          stopBreathingSession();
+          return;
+        }
+      }
+
+      if (breathingPhaseElapsed >= currentPhase.seconds) {
+        breathingPhaseIndex = (breathingPhaseIndex + 1) % phases.length;
+        breathingPhaseElapsed = 0;
+      }
+    }
+
+    function startBreathingSession() {
+      if (breathingRunning) return;
+
+      const key = breathingPatternSelect.value;
+      const pattern = BREATH_PATTERNS[key];
+      if (!pattern) return;
+
+      breathingTotalSeconds = parseInt(breathingSessionSelect.value, 10) || 0;
+      breathingRemainingSeconds = breathingTotalSeconds;
+
+      breathingPhaseIndex = 0;
+      breathingPhaseElapsed = 0;
+      breathingRunning = true;
+
+      if (breathingTotalSeconds > 0) {
+        breathingSubLabel.textContent = "Follow the circle until the session timer completes.";
+      } else {
+        breathingSubLabel.textContent = "Open session. Use Reset whenever you feel done.";
+      }
+
+      breathingHint.textContent =
+        "Breathe softly. No forcing or pushing. Comfort first.";
+
+      updateBreathingTimerUI();
+      breathingLabel.textContent = pattern.phases[0].label;
+      updateBreathingCirclePhase(pattern.phases[0].label);
+
+      if (breathingIntervalId) clearInterval(breathingIntervalId);
+      breathingIntervalId = setInterval(tickBreathing, 1000);
+
+      breathingStartBtn.disabled = true;
+    }
+
+    breathingStartBtn.addEventListener("click", () => {
+      startBreathingSession();
+    });
+
+    breathingResetBtn.addEventListener("click", () => {
+      stopBreathingSession();
+    });
+
+    breathingSessionSelect.addEventListener("change", () => {
+      // Only update preview timer if not currently running
+      if (!breathingRunning) {
+        const seconds = parseInt(breathingSessionSelect.value, 10) || 0;
+        breathingTotalSeconds = seconds;
+        breathingRemainingSeconds = seconds;
+        updateBreathingTimerUI();
+      }
+    });
+
+    // Initialize breathing UI on load
+    resetBreathingUI();
   </script>
 </body>
 </html>
-
-
