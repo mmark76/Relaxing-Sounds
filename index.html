@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calm Utility</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.6);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 50%, #020617 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      padding: 24px 24px 28px;
+      backdrop-filter: blur(18px);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .title-group { display: flex; flex-direction: column; gap: 4px; }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .subtitle { font-size: 0.85rem; color: var(--text-muted); }
+
+    .chip {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .app { padding: 16px 14px 20px; border-radius: 20px; }
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    section.card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    section.card + section.card { margin-top: 10px; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .card-caption { font-size: 0.8rem; color: var(--text-muted); }
+
+    .sound-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: .18s;
+    }
+
+    .btn.small { padding: 5px 9px; font-size: 0.72rem; }
+    .btn.primary { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .btn:hover { background: rgba(15,23,42,0.95); color: var(--text); }
+
+    .sound-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .sound-status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(148,163,184,0.5);
+      margin-right: 6px;
+    }
+    .sound-status-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    .slider { width: 100%; margin-top: 6px; }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <header>
+      <div class="title-group">
+        <h1>Calm Utility</h1>
+        <p class="subtitle">Ήχοι. Αναπνοές. Μικρά sessions ηρεμίας.</p>
+      </div>
+      <div class="chip">low stimulation • focus first</div>
+    </header>
+
+    <main class="layout">
+
+      <!-- ΑΡΙΣΤΕΡΑ -->
+      <div>
+
+        <!-- Ήχοι -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Ήχοι Υποβάθρου</div>
+              <div class="card-caption">Λιτοί ήχοι για ήρεμη συγκέντρωση.</div>
+            </div>
+            <button class="btn small" id="soundMasterToggle">▶ Έναρξη</button>
+          </div>
+
+          <div class="sound-buttons">
+            <button class="btn primary" data-sound="tone">Ήπιος Τόνος</button>
+            <button class="btn" data-sound="noise">Απαλός Θόρυβος</button>
+            <button class="btn" data-sound="pulse">Κύμα Αναπνοής</button>
+          </div>
+
+          <!-- My Uploads -->
+          <hr style="border:0; border-top:1px solid rgba(148,163,184,0.15); margin:10px 0;">
+          <div class="sound-meta"><span>My Uploads</span></div>
+
+          <input type="file" id="soundUpload" accept=".mp3,.wav,.ogg" multiple
+                 style="margin-bottom:8px; width:100%; font-size:0.75rem;" />
+
+          <select id="uploadedSoundsSelect" style="width:100%; padding:6px; display:none;">
+            <option disabled selected>Επίλεξε από τα uploaded…</option>
+          </select>
+
+          <div class="sound-meta">
+            <div style="display:flex; align-items:center;">
+              <div class="sound-status-dot" id="soundStatusDot"></div>
+              <span id="soundStatusLabel">Ανενεργό</span>
+            </div>
+            <span id="soundCurrentLabel">—</span>
+          </div>
+
+          <input id="volumeSlider" class="slider" type="range" min="0" max="100" value="40" />
+          <div class="sound-meta"><span>Ένταση</span><span id="volumeValue">40%</span></div>
+        </section>
+
+        <!-- (Αν θες ξανά Αναπνοή, την προσθέτουμε μετά) -->
+      </div>
+
+      <!-- ΔΕΞΙΑ: Defaults Sounds -->
+      <div>
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Defaults Sounds</div>
+              <div class="card-caption">10 έτοιμοι ήχοι από τον φάκελο sounds/.</div>
+            </div>
+          </div>
+
+          <div class="sound-buttons">
+<button class="btn small" data-default-sound="sound_(1).wav">sound_(1)</button>
+<button class="btn small" data-default-sound="sound_(2).wav">sound_(2)</button>
+<button class="btn small" data-default-sound="sound_(3).wav">sound_(3)</button>
+<button class="btn small" data-default-sound="sound_(4).wav">sound_(4)</button>
+<button class="btn small" data-default-sound="sound_(5).wav">sound_(5)</button>
+<button class="btn small" data-default-sound="sound_(6).wav">sound_(6)</button>
+<button class="btn small" data-default-sound="sound_(7).wav">sound_(7)</button>
+<button class="btn small" data-default-sound="sound_(8).wav">sound_(8)</button>
+<button class="btn small" data-default-sound="sound_(9).wav">sound_(9)</button>
+<button class="btn small" data-default-sound="sound_(10).wav">sound_(10)</button>
+          </div>
+        </section>
+      </div>
+
+    </main>
+
+    <footer>
+      <span>Σχεδιασμένο για χαμηλή διέγερση και γρήγορη πρόσβαση.</span>
+      <span>Tip: άνοιξέ το σε full-screen και άφησε μόνο αυτό.</span>
+    </footer>
+  </div>
+
+  <script>
+    /* -------------------------------------
+       CORE AUDIO SYSTEM
+    --------------------------------------*/
+    let audioContext = null;
+    let masterGain = null;
+    let currentSound = null;
+    let noiseNode = null;
+    let pulseInterval = null;
+    let soundActive = false;
+
+    const soundStatusDot = document.getElementById("soundStatusDot");
+    const soundStatusLabel = document.getElementById("soundStatusLabel");
+    const soundCurrentLabel = document.getElementById("soundCurrentLabel");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volumeValue = document.getElementById("volumeValue");
+    const soundMasterToggle = document.getElementById("soundMasterToggle");
+
+    const soundUpload = document.getElementById("soundUpload");
+    const uploadedSoundsSelect = document.getElementById("uploadedSoundsSelect");
+
+    let uploadedSounds = {};
+
+    function ensureAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioContext.createGain();
+        masterGain.gain.value = volumeSlider.value / 100 * 0.5;
+        masterGain.connect(audioContext.destination);
+      }
+    }
+
+    async function resumeIfNeeded() {
+      if (!audioContext) return;
+      if (audioContext.state === "suspended") await audioContext.resume();
+    }
+
+    function stopAllSoundSources() {
+      if (currentSound) {
+        if (typeof currentSound.stop === "function") {
+          try { currentSound.stop(); } catch (e) {}
+        }
+        if (typeof currentSound.disconnect === "function") {
+          try { currentSound.disconnect(); } catch (e) {}
+        }
+        if (currentSound instanceof HTMLAudioElement) {
+          try {
+            currentSound.pause();
+            currentSound.currentTime = 0;
+          } catch (e) {}
+        }
+        currentSound = null;
+      }
+
+      if (noiseNode) {
+        try { noiseNode.stop(); } catch (e) {}
+        try { noiseNode.disconnect(); } catch (e) {}
+        noiseNode = null;
+      }
+
+      if (pulseInterval) {
+        clearInterval(pulseInterval);
+        pulseInterval = null;
+      }
+    }
+
+    function setSoundStatus(active, label = "Ανενεργό") {
+      soundActive = active;
+      soundStatusDot.classList.toggle("active", active);
+      soundStatusLabel.textContent = active ? "Ενεργό" : "Ανενεργό";
+      soundCurrentLabel.textContent = active ? label : "—";
+      soundMasterToggle.textContent = active ? "⏹ Παύση" : "▶ Έναρξη";
+    }
+
+    /* --------------------------------------------------------
+       PLAY DEFAULT FILE FROM /sounds (δεξί panel)
+    ---------------------------------------------------------*/
+    async function playFileFromSounds(filename) {
+      ensureAudioContext();
+      await resumeIfNeeded();
+      stopAllSoundSources();
+
+      const audio = new Audio(`sounds/${filename}`);
+      const track = audioContext.createMediaElementSource(audio);
+      track.connect(masterGain);
+      audio.loop = true;
+      audio.play();
+
+      currentSound = audio;
+      setSoundStatus(true, filename);
+    }
+
+    document.querySelectorAll("[data-default-sound]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const filename = btn.getAttribute("data-default-sound");
+        if (filename) {
+          await playFileFromSounds(filename);
+        }
+      });
+    });
+
+    /* --------------------------------------------------------
+       UPLOAD MULTIPLE FILES (My Uploads)
+    ---------------------------------------------------------*/
+    soundUpload.addEventListener("change", evt => {
+      const files = Array.from(evt.target.files);
+
+      files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        uploadedSounds[file.name] = url;
+      });
+
+      refreshUploadedList();
+    });
+
+    function refreshUploadedList() {
+      uploadedSoundsSelect.innerHTML =
+        `<option disabled selected>Επίλεξε από τα uploaded…</option>`;
+
+      const names = Object.keys(uploadedSounds);
+
+      if (names.length === 0) {
+        uploadedSoundsSelect.style.display = "none";
+        return;
+      }
+
+      names.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        uploadedSoundsSelect.appendChild(opt);
+      });
+
+      uploadedSoundsSelect.style.display = "block";
+    }
+
+    uploadedSoundsSelect.addEventListener("change", async (e) => {
+      const name = e.target.value;
+      const url = uploadedSounds[name];
+
+      ensureAudioContext();
+      await resumeIfNeeded();
+      stopAllSoundSources();
+
+      const audio = new Audio(url);
+      const track = audioContext.createMediaElementSource(audio);
+      track.connect(masterGain);
+      audio.loop = true;
+      audio.play();
+
+      currentSound = audio;
+      setSoundStatus(true, name);
+    });
+
+    /* ------------------------------------------
+       BUILT-IN TONE / NOISE / PULSE
+    -------------------------------------------*/
+    function playTone() {
+      ensureAudioContext();
+      stopAllSoundSources();
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 432;
+      gain.gain.value = 0.35;
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start();
+      currentSound = osc;
+      setSoundStatus(true, "Ήπιος Τόνος (432Hz)");
+    }
+
+    function createNoiseBuffer() {
+      const bufferSize = audioContext.sampleRate * 2;
+      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+      return buffer;
+    }
+
+    function playNoise() {
+      ensureAudioContext();
+      stopAllSoundSources();
+      const src = audioContext.createBufferSource();
+      src.buffer = createNoiseBuffer();
+      src.loop = true;
+      const filter = audioContext.createBiquadFilter();
+      filter.type = "lowpass"; filter.frequency.value = 1500;
+      const gain = audioContext.createGain(); gain.gain.value = 0.4;
+      src.connect(filter); filter.connect(gain); gain.connect(masterGain);
+      src.start();
+      noiseNode = src;
+      setSoundStatus(true, "Απαλός Θόρυβος");
+    }
+
+    function playPulse() {
+      ensureAudioContext();
+      stopAllSoundSources();
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.type = "sine"; osc.frequency.value = 220;
+      gain.gain.value = 0;
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start();
+      let up = true;
+      pulseInterval = setInterval(() => {
+        const target = up ? 0.35 : 0.05;
+        gain.gain.linearRampToValueAtTime(target, audioContext.currentTime + 2.5);
+        up = !up;
+      }, 2500);
+      currentSound = osc;
+      setSoundStatus(true, "Κύμα Αναπνοής");
+    }
+
+    document.querySelectorAll("[data-sound]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const t = btn.dataset.sound;
+        if (t === "tone") playTone();
+        if (t === "noise") playNoise();
+        if (t === "pulse") playPulse();
+      });
+    });
+
+    soundMasterToggle.addEventListener("click", () => {
+      if (!soundActive) playTone();
+      else { stopAllSoundSources(); setSoundStatus(false); }
+    });
+
+    volumeSlider.addEventListener("input", () => {
+      const v = volumeSlider.value;
+      volumeValue.textContent = v + "%";
+      if (masterGain) {
+        masterGain.gain.value = v / 100 * 0.5;
+      }
+    });
+  </script>
+</body>
+</html>
