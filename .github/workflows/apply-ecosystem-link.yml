@@ -1,0 +1,44 @@
+name: Apply ecosystem link layout
+
+on:
+  push:
+    paths:
+      - .github/relaxing-sounds-link-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply focused index changes
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          old_body = """      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;"""
+          new_body = """      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 24px;"""
+          old_link = '<a href="https://markellosecosystem.com/" style="display:inline-block; margin:12px 16px;">← Back to Markellos Ecosystem</a>'
+          new_link = '<a href="https://markellosecosystem.com/" style="display:block; width:fit-content; max-width:calc(100% - 32px); margin:0 auto; padding:5px 10px; box-sizing:border-box; border:1px solid rgba(148,163,184,0.10); border-radius:8px; background:rgba(148,163,184,0.035); color:inherit; text-decoration:none; font-size:0.78rem; line-height:1.3; text-align:center; overflow-wrap:anywhere;">← Back to Markellos Ecosystem</a>'
+          if text.count(old_body) != 1 or text.count(old_link) != 1:
+              raise SystemExit("Expected source text was not found exactly once")
+          path.write_text(text.replace(old_body, new_body, 1).replace(old_link, new_link, 1), encoding="utf-8")
+      - name: Commit index change
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Center ecosystem link above app header"
+          git push
