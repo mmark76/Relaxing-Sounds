@@ -53,3 +53,5 @@ jobs:
           git add index.html
           git commit -m "Center ecosystem link above app header"
           git push
+
+# Trigger after workflow registration.
