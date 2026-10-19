@@ -580,150 +580,62 @@ body {
     }
   </style>
 
-<!-- Privacy-friendly analytics by Plausible -->
-<script async src="https://stats.chessmnemonics.net/js/pa-KZ7IxykipKdvJqpwixt3d.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-
+<script async src="https://analytics.markellosecosystem.com/v1/script.js"></script>
 <script>
 (function () {
   "use strict";
 
-  const MEASUREMENT_ID = "G-DK5WN8TH3Z";
-  const CONSENT_KEY = "relaxing.analyticsConsent.v1";
-  const SCRIPT_ID = "relaxing-google-tag";
-  const deniedConsent = {
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
-    analytics_storage: "denied"
-  };
-
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
-
-  function readConsent() {
-    try {
-      const value = localStorage.getItem(CONSENT_KEY);
-      return value === "granted" || value === "denied" ? value : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function applyConsent(consent) {
-    window.gtag("consent", "update", {
-      ...deniedConsent,
-      analytics_storage: consent === "granted" ? "granted" : "denied"
-    });
-  }
-
-  function setConsent(consent) {
-    try { localStorage.setItem(CONSENT_KEY, consent); } catch {}
-    applyConsent(consent);
-  }
-
-  window.gtag("consent", "default", deniedConsent);
-  applyConsent(readConsent());
-
-  if (!document.getElementById(SCRIPT_ID)) {
-    const script = document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.async = true;
-    script.src = "https://www.googletagmanager.com/gtag/js?id=" + MEASUREMENT_ID;
-    document.head.appendChild(script);
-  }
-
-  window.gtag("js", new Date());
-  window.gtag("config", MEASUREMENT_ID, {
-    allow_google_signals: false,
-    allow_ad_personalization_signals: false
-  });
-
-  function installConsentUi() {
-    const banner = document.createElement("aside");
-    banner.className = "analytics-consent";
-    banner.setAttribute("role", "dialog");
-    banner.setAttribute("aria-labelledby", "analyticsConsentTitle");
+  function installAnalyticsNotice() {
+    const notice = document.createElement("aside");
+    notice.className = "analytics-consent";
+    notice.setAttribute("role", "status");
+    notice.setAttribute("aria-labelledby", "analyticsNoticeTitle");
 
     const copy = document.createElement("div");
     const title = document.createElement("h2");
-    title.id = "analyticsConsentTitle";
-    title.textContent = "Analytics choices";
+    title.id = "analyticsNoticeTitle";
+    title.textContent = "Cookie-less analytics";
 
     const description = document.createElement("p");
     description.textContent =
-      "Google Analytics helps measure visits and use of Relaxing Sounds. Analytics storage stays disabled unless you allow it. Advertising features remain disabled.";
-
-    copy.append(title, description);
+      "This site does not use cookies for analytics. It records only aggregate visits by hour, domain and country to help the administrator understand traffic; it is not used for any other purpose.";
 
     const actions = document.createElement("div");
     actions.className = "analytics-consent-actions";
-
-    const necessary = document.createElement("button");
-    necessary.type = "button";
-    necessary.textContent = "Necessary only";
-
-    const allow = document.createElement("button");
-    allow.type = "button";
-    allow.className = "analytics-consent-allow";
-    allow.textContent = "Allow analytics";
 
     const close = document.createElement("button");
     close.type = "button";
     close.className = "analytics-consent-close";
     close.textContent = "×";
-    close.setAttribute("aria-label", "Close analytics choices");
+    close.setAttribute("aria-label", "Close analytics notice");
     close.title = "Close";
-
-    function refresh() {
-      close.hidden = readConsent() === null;
-      banner.hidden = readConsent() !== null;
-    }
-
-    necessary.addEventListener("click", function () {
-      setConsent("denied");
-      banner.hidden = true;
-      close.hidden = false;
-    });
-
-    allow.addEventListener("click", function () {
-      setConsent("granted");
-      banner.hidden = true;
-      close.hidden = false;
-    });
-
     close.addEventListener("click", function () {
-      banner.hidden = true;
+      notice.hidden = true;
     });
 
-    actions.append(necessary, allow, close);
-    banner.append(copy, actions);
-    document.body.appendChild(banner);
+    copy.append(title, description);
+    actions.append(close);
+    notice.append(copy, actions);
+    document.body.appendChild(notice);
 
     const footer = document.querySelector(".app > footer");
     if (footer) {
       const reopen = document.createElement("button");
       reopen.type = "button";
       reopen.className = "analytics-choice-button";
-      reopen.textContent = "Analytics choices";
+      reopen.textContent = "Analytics information";
       reopen.addEventListener("click", function () {
-        close.hidden = false;
-        banner.hidden = false;
-        necessary.focus();
+        notice.hidden = false;
+        close.focus();
       });
       footer.appendChild(reopen);
     }
-
-    refresh();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installConsentUi, { once: true });
+    document.addEventListener("DOMContentLoaded", installAnalyticsNotice, { once: true });
   } else {
-    installConsentUi();
+    installAnalyticsNotice();
   }
 })();
 </script>
