@@ -585,6 +585,24 @@ body {
 (function () {
   "use strict";
 
+  const noticeKey = "relaxing-sounds:analytics-notice-dismissed";
+
+  function wasNoticeDismissed() {
+    try {
+      return localStorage.getItem(noticeKey) === "1";
+    } catch {
+      return false;
+    }
+  }
+
+  function rememberNoticeDismissal() {
+    try {
+      localStorage.setItem(noticeKey, "1");
+    } catch {
+      // The notice can still be closed when browser storage is unavailable.
+    }
+  }
+
   function installAnalyticsNotice() {
     const notice = document.createElement("aside");
     notice.className = "analytics-consent";
@@ -611,11 +629,13 @@ body {
     close.title = "Close";
     close.addEventListener("click", function () {
       notice.hidden = true;
+      rememberNoticeDismissal();
     });
 
     copy.append(title, description);
     actions.append(close);
     notice.append(copy, actions);
+    notice.hidden = wasNoticeDismissed();
     document.body.appendChild(notice);
 
     const footer = document.querySelector(".app > footer");
